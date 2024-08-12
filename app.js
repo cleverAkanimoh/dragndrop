@@ -4,30 +4,58 @@ let newX = 0,
   startY = 0,
   activeCard = null;
 
-const cards = document.getElementsByClassName("drag-card");
+const createNoteBtn = document.getElementById("create-new-note");
+
+let cardCount = 0; // Keep track of the number of cards
 
 // Load card positions from local storage
 window.onload = function () {
-  for (let index = 0; index < cards.length; index++) {
-    const card = cards[index];
+  cardCount = parseInt(localStorage.getItem("card-count")) || 0;
+  
+  for (let index = 0; index < cardCount; index++) {
     const savedPosition = localStorage.getItem(`card-position-${index}`);
     if (savedPosition) {
-      const { top, left } = JSON.parse(savedPosition);
-      card.style.position = "absolute";
-      card.style.top = `${top}px`;
-      card.style.left = `${left}px`;
+      const { top, left, content } = JSON.parse(savedPosition);
+      createCard(index, top, left, content);
     }
   }
 };
 
-// Add mousedown event listener to all cards
-for (let index = 0; index < cards.length; index++) {
-  const card = cards[index];
+// Add event listener to the "Create New Note" button
+createNoteBtn.addEventListener("click", function () {
+  createCard(cardCount, 50, 50, "New Note"); // Create a new card at a default position
+  cardCount++;
+  localStorage.setItem("card-count", cardCount); // Update the card count in local storage
+});
+
+function createCard(index, top, left, content) {
+  const card = document.createElement("div");
+  card.className = "drag-card";
+  card.style.position = "absolute";
+  card.style.top = `${top}px`;
+  card.style.left = `${left}px`;
+
+  const editableContent = document.createElement("div");
+  editableContent.className = "editable-content";
+  editableContent.contentEditable = true;
+  editableContent.textContent = content;
+
+  // Save content on blur (when the user clicks away)
+  editableContent.addEventListener("blur", function () {
+    saveCardPosition(card, index);
+  });
+
+  card.appendChild(editableContent);
+  document.body.appendChild(card);
+
   card.addEventListener("mousedown", mouseDown);
+
+  // Save initial position
+  saveCardPosition(card, index);
 }
 
 function mouseDown(event) {
-  activeCard = event.target;
+  activeCard = event.currentTarget;
 
   // Set the initial coordinates for the drag
   startX = event.clientX;
@@ -49,19 +77,17 @@ function mouseMove(event) {
   startY = event.clientY;
 
   // Update the card's position
-  //   activeCard.style.position = "absolute";
   activeCard.style.top = `${activeCard.offsetTop - newY}px`;
   activeCard.style.left = `${activeCard.offsetLeft - newX}px`;
 }
 
 function mouseUp() {
   // Save the current position of the active card to local storage
-  const cardIndex = Array.prototype.indexOf.call(cards, activeCard);
-  const position = {
-    top: activeCard.offsetTop,
-    left: activeCard.offsetLeft,
-  };
-  localStorage.setItem(`card-position-${cardIndex}`, JSON.stringify(position));
+  const cardIndex = Array.prototype.indexOf.call(
+    document.getElementsByClassName("drag-card"),
+    activeCard
+  );
+  saveCardPosition(activeCard, cardIndex);
 
   // Remove the mousemove and mouseup listeners after the drag is complete
   document.removeEventListener("mousemove", mouseMove);
@@ -69,4 +95,14 @@ function mouseUp() {
 
   // Reset activeCard
   activeCard = null;
+}
+
+function saveCardPosition(card, index) {
+  const editableContent = card.querySelector(".editable-content");
+  const position = {
+    top: card.offsetTop,
+    left: card.offsetLeft,
+    content: editableContent.textContent,
+  };
+  localStorage.setItem(`card-position-${index}`, JSON.stringify(position));
 }
