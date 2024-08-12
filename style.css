@@ -63,17 +63,23 @@ body {
   cursor: text; /* Change cursor to text for editing */
 }
 
+.drag-card:hover .delete-btn {
+  opacity: 100;
+}
+
 .delete-btn {
-  background-color: #ff4d4d; /* Red background */
-  border: none; /* No borders */
-  color: black; /* White text */
+  transition: opacity 0.35s ease;
+  opacity: 0;
+  background-color: #fff;
+  border: none;
+  color: #ff4d4d;
   padding: 5px;
-  cursor: pointer; /* Pointer/hand icon on hover */
-  border-radius: 5px; /* Rounded corners */
-  align-self: flex-end; /* Align the button to the right */
-  margin-top: 5px;
+  cursor: pointer;
+  border-radius: 5px;
+  /* align-self: flex-start; */
+  /* margin-top: 5px; */
 }
 
 .delete-btn i {
-  font-size: 14px; /* Font size for the icon */
+  font-size: 12px; /* Font size for the icon */
 }
