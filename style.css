@@ -13,19 +13,34 @@ body {
   width: auto;
 }
 
-/* .drag-card {
-  width: 100px;
-  height: 100px;
-  background-color: #afda9f;
-  border-radius: 5px;
-  cursor: pointer;
-  position: fixed;
-} */
-
 #create-new-note {
   position: fixed;
-  left: 10px;
+  right: 10px;
   bottom: 10px;
+  background-color: #000; /* Green background */
+  border: none; /* Remove borders */
+  color: white; /* White text */
+  padding: 10px 20px; /* Some padding */
+  text-align: center; /* Center the text */
+  text-decoration: none; /* Remove underline */
+  display: inline-block; /* Make the button inline */
+  font-size: 16px; /* Increase font size */
+  margin: 10px 2px; /* Add some margin */
+  cursor: pointer; /* Pointer/hand icon on hover */
+  border-radius: 12px; /* Rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add some shadow */
+  transition: background-color 0.3s, box-shadow 0.3s; /* Smooth transition */
+}
+
+#create-new-note:hover {
+  background-color: #45a049; /* Darker green on hover */
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* Increase shadow on hover */
+}
+
+#create-new-note:active {
+  background-color: #3e8e41; /* Even darker green when clicked */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Reduce shadow when clicked */
+  transform: translateY(2px); /* Move the button down slightly */
 }
 
 .drag-card {
@@ -46,4 +61,19 @@ body {
   height: 100%;
   overflow: auto;
   cursor: text; /* Change cursor to text for editing */
+}
+
+.delete-btn {
+  background-color: #ff4d4d; /* Red background */
+  border: none; /* No borders */
+  color: black; /* White text */
+  padding: 5px;
+  cursor: pointer; /* Pointer/hand icon on hover */
+  border-radius: 5px; /* Rounded corners */
+  align-self: flex-end; /* Align the button to the right */
+  margin-top: 5px;
+}
+
+.delete-btn i {
+  font-size: 14px; /* Font size for the icon */
 }

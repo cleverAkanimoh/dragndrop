@@ -4,14 +4,11 @@ let newX = 0,
   startY = 0,
   activeCard = null;
 
-const createNoteBtn = document.getElementById("create-new-note");
-
 let cardCount = 0; // Keep track of the number of cards
 
 // Load card positions from local storage
 window.onload = function () {
   cardCount = parseInt(localStorage.getItem("card-count")) || 0;
-  
   for (let index = 0; index < cardCount; index++) {
     const savedPosition = localStorage.getItem(`card-position-${index}`);
     if (savedPosition) {
@@ -22,11 +19,13 @@ window.onload = function () {
 };
 
 // Add event listener to the "Create New Note" button
-createNoteBtn.addEventListener("click", function () {
-  createCard(cardCount, 50, 50, "New Note"); // Create a new card at a default position
-  cardCount++;
-  localStorage.setItem("card-count", cardCount); // Update the card count in local storage
-});
+document
+  .getElementById("create-new-note")
+  .addEventListener("click", function () {
+    createCard(cardCount, 50, 50, "New Note"); // Create a new card at a default position
+    cardCount++;
+    localStorage.setItem("card-count", cardCount); // Update the card count in local storage
+  });
 
 function createCard(index, top, left, content) {
   const card = document.createElement("div");
@@ -45,7 +44,16 @@ function createCard(index, top, left, content) {
     saveCardPosition(card, index);
   });
 
+  // Create delete button
+  const deleteBtn = document.createElement("button");
+  deleteBtn.className = "delete-btn";
+  deleteBtn.innerHTML = '<i class="fas fa-trash"></i>'; // Using Font Awesome trash icon
+  deleteBtn.addEventListener("click", function () {
+    deleteCard(card, index);
+  });
+
   card.appendChild(editableContent);
+  card.appendChild(deleteBtn);
   document.body.appendChild(card);
 
   card.addEventListener("mousedown", mouseDown);
@@ -105,4 +113,11 @@ function saveCardPosition(card, index) {
     content: editableContent.textContent,
   };
   localStorage.setItem(`card-position-${index}`, JSON.stringify(position));
+}
+
+function deleteCard(card, index) {
+  card.remove(); // Remove the card from the DOM
+  localStorage.removeItem(`card-position-${index}`); // Remove the card from local storage
+  cardCount--; // Decrease the card count
+  localStorage.setItem("card-count", cardCount); // Update card count in local storage
 }
