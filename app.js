@@ -18,11 +18,16 @@ window.onload = function () {
   }
 };
 
+let newNoteTop = 50;
+let newNoteLeft = 50;
+
 // Add event listener to the "Create New Note" button
 document
   .getElementById("create-new-note")
   .addEventListener("click", function () {
-    createCard(cardCount, 50, 50, "New Note"); // Create a new card at a default position
+    createCard(cardCount, newNoteTop, newNoteLeft, "New Note"); // Create a new card at a default position
+    newNoteLeft = newNoteLeft + 5;
+    newNoteTop += 5;
     cardCount++;
     localStorage.setItem("card-count", cardCount); // Update the card count in local storage
   });
