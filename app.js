@@ -26,8 +26,8 @@ document
   .getElementById("create-new-note")
   .addEventListener("click", function () {
     createCard(cardCount, newNoteTop, newNoteLeft, "New Note"); // Create a new card at a default position
-    newNoteLeft = newNoteLeft + 5;
-    newNoteTop += 5;
+    newNoteLeft += 10;
+    newNoteTop += 10;
     cardCount++;
     localStorage.setItem("card-count", cardCount); // Update the card count in local storage
   });
